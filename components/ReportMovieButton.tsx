@@ -16,8 +16,7 @@ export default function ReportMovieButton({ slug, title }: { slug: string; title
       </button>
       {open && (
         <ReportModal
-          movieSlug={slug}
-          movieTitle={title}
+          movie={{ slug, title }}
           onClose={() => setOpen(false)}
         />
       )}
