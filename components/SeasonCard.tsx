@@ -6,6 +6,7 @@ type Season = {
   number: number;
   year: number;
   cover: string;
+  episodes: number;
 };
 
 type Props = {
