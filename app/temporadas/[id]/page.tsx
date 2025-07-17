@@ -7,13 +7,21 @@ import Link from 'next/link';
 import { Calendar, Clock } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import EpisodeListWithReport from '@/components/EpisodeListWithReport';
+import { type Metadata, type ResolvingMetadata } from 'next';
+
+interface PageProps {
+  params: { id: string };
+}
 
 export async function generateStaticParams() {
   const seasons = await getSeasons();
   return seasons.map((s) => ({ id: s.id.toString() }));
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata(
+  { params }: PageProps,
+  _parent?: ResolvingMetadata
+): Promise<Metadata> {
   const seasonId = Number(params.id);
   if (isNaN(seasonId)) {
     return {
@@ -67,7 +75,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   };
 }
 
-export default async function SeasonPage({ params }: { params: { id: string } }) {
+export default async function SeasonPage({ params }: PageProps) {
   const seasonId = Number(params.id);
   if (isNaN(seasonId)) return notFound();
 
