@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variables para modo claro */
+:root {
+  --bg-primary: #ffffff;
+  --text-primary: #0f172a;
+  --accent: #1e40af;
+}
+
+/* Variables para modo oscuro */
+.dark {
+  --bg-primary: #0b1e3d;
+  --text-primary: #ffffff;
+  --accent: #fec84b;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
