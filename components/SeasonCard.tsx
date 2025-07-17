@@ -1,7 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, Clapperboard } from "lucide-react";
-import type { Season } from "@/lib/data";
+type Season = {
+  id: number;
+  number: number;
+  year: number;
+  cover: string;
+};
 
 type Props = {
   season: Season;
