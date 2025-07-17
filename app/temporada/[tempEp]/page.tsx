@@ -6,6 +6,10 @@ import Link from 'next/link';
 import { getEpisodes } from '@/lib/data';
 import { slugify } from '@/lib/utils/slugify';
 
+const resolveProxy = (url: string) => {
+  return `https://embed.cdnplayer.org/proxy?url=${encodeURIComponent(url)}`;
+};
+
 export default function EpisodePage() {
   const params = useParams();
   const [seasonId, episodeNumber] = (params.tempEp as string)
@@ -49,9 +53,11 @@ export default function EpisodePage() {
     );
   }
 
-  const getUrl = () =>
-    selectedLang === 'castellano' ? episode.castellano_link :
-    selectedLang === 'latino' ? episode.latino_link : null;
+  const getUrl = () => {
+    const baseUrl = selectedLang === 'castellano' ? episode.castellano_link :
+                    selectedLang === 'latino' ? episode.latino_link : null;
+    return baseUrl ? resolveProxy(baseUrl) : null;
+  };
 
   const selectedUrl = getUrl();
 
@@ -73,7 +79,6 @@ export default function EpisodePage() {
         Temporada {episode.season_id} - Episodio {episode.episode_number}
       </p>
 
-      {/* Botones de idioma */}
       <div className="flex gap-6 mb-6">
         <button
           onClick={() => handleSelect('castellano')}
@@ -97,7 +102,6 @@ export default function EpisodePage() {
         </button>
       </div>
 
-      {/* Reproductor */}
       {selectedLang && (
         <div
           id="video"
@@ -117,7 +121,6 @@ export default function EpisodePage() {
         </div>
       )}
 
-      {/* Navegación */}
       <div className="mt-10 flex justify-between items-center text-base gap-4 font-medium">
         {previous ? (
           <Link

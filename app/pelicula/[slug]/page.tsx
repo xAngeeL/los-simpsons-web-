@@ -9,6 +9,10 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+const resolveProxy = (url: string) => {
+  return `/api/proxy?url=${encodeURIComponent(url)}`;
+};
+
 export default function PeliculaPage() {
   const { slug } = useParams();
   const [movie, setMovie] = useState<any>(null);
@@ -45,9 +49,11 @@ export default function PeliculaPage() {
     if (videoSection) videoSection.scrollIntoView({ behavior: 'smooth' });
   }
 
-  const getUrl = () =>
-    selectedLang === 'castellano' ? movie?.castellano_link :
-    selectedLang === 'latino' ? movie?.latino_link : null;
+  const getUrl = () => {
+    const baseUrl = selectedLang === 'castellano' ? movie?.castellano_link :
+                    selectedLang === 'latino' ? movie?.latino_link : null;
+    return baseUrl ? resolveProxy(baseUrl) : null;
+  };
 
   const selectedUrl = getUrl();
 
@@ -65,7 +71,6 @@ export default function PeliculaPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1e3a8a] to-[#0f172a] text-white">
       <div className="max-w-5xl mx-auto p-6">
-        {/* Breadcrumb */}
         <div className="text-sm text-gray-400 mb-6 space-x-1">
           <Link href="/" className="hover:underline text-yellow-400">🏠 Inicio</Link>
           <span>{'>'}</span>
@@ -74,13 +79,11 @@ export default function PeliculaPage() {
           <span className="text-white">{movie.title}</span>
         </div>
 
-        {/* Título */}
         <h1 className="text-3xl font-bold mb-2">{movie.title}</h1>
         <p className="text-sm text-gray-400 mb-6">
           {movie.year} · {movie.duration} · {movie.language || 'Castellano y Latino'}
         </p>
 
-        {/* Botones de idioma */}
         <div className="flex gap-6 mb-6">
           <button
             onClick={() => handleSelect('castellano')}
@@ -104,7 +107,6 @@ export default function PeliculaPage() {
           </button>
         </div>
 
-        {/* Reproductor */}
         <div
           id="video"
           className="w-full h-[720px] bg-black rounded-lg overflow-hidden flex items-center justify-center"
@@ -124,7 +126,6 @@ export default function PeliculaPage() {
           )}
         </div>
 
-        {/* Botón de volver */}
         <div className="mt-10 text-center">
           <Link
             href="/peliculas"
