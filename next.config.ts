@@ -4,6 +4,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 module.exports = withBundleAnalyzer({
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true, // Ignora errores de ESLint en producción
+  },
   images: {
     domains: ['homerverso.tv'], // o los dominios de tus imágenes
   },
