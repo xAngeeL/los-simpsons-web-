@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { CalendarDays, Clock } from "lucide-react";
 import type { Episode } from "@/types/episode";
-;
 
 type Props = { episode: Episode };
 
