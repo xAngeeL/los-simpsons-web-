@@ -7,8 +7,9 @@ import { getEpisodes } from '@/lib/data';
 import { slugify } from '@/lib/utils/slugify';
 
 const resolveProxy = (url: string) => {
-  return `https://embed.cdnplayer.org/proxy?url=${encodeURIComponent(url)}`;
+  return `/api/proxy?url=${encodeURIComponent(url)}`;
 };
+
 
 export default function EpisodePage() {
   const params = useParams();

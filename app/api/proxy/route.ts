@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
+    console.error('Proxy error:', error);
     return new Response('Proxy error', { status: 500 });
   }
 }
