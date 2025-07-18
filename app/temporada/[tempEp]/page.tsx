@@ -10,7 +10,6 @@ const resolveProxy = (url: string) => {
   return `/api/proxy?url=${encodeURIComponent(url)}`;
 };
 
-
 export default function EpisodePage() {
   const params = useParams();
   const [seasonId, episodeNumber] = (params.tempEp as string)
@@ -43,6 +42,25 @@ export default function EpisodePage() {
     fetchData();
   }, [seasonId, episodeNumber]);
 
+  const getUrl = () => {
+    const baseUrl = selectedLang === 'castellano' ? episode?.castellano_link :
+                    selectedLang === 'latino' ? episode?.latino_link : null;
+    return baseUrl ? resolveProxy(baseUrl) : null;
+  };
+
+  const selectedUrl = getUrl();
+
+  const currentIndex = episodes.findIndex((ep) => ep.episode_number === episode?.episode_number);
+  const previous = currentIndex > 0 ? episodes[currentIndex - 1] : null;
+  const next = currentIndex < episodes.length - 1 ? episodes[currentIndex + 1] : null;
+
+  function handleSelect(lang: 'castellano' | 'latino') {
+    setSelectedLang(lang);
+    localStorage.setItem('selected-language', lang);
+    const videoSection = document.getElementById('video');
+    if (videoSection) videoSection.scrollIntoView({ behavior: 'smooth' });
+  }
+
   if (!episode) {
     return (
       <div className="p-8 text-white">
@@ -52,25 +70,6 @@ export default function EpisodePage() {
         </Link>
       </div>
     );
-  }
-
-  const getUrl = () => {
-    const baseUrl = selectedLang === 'castellano' ? episode.castellano_link :
-                    selectedLang === 'latino' ? episode.latino_link : null;
-    return baseUrl ? resolveProxy(baseUrl) : null;
-  };
-
-  const selectedUrl = getUrl();
-
-  const currentIndex = episodes.findIndex((ep) => ep.episode_number === episode.episode_number);
-  const previous = currentIndex > 0 ? episodes[currentIndex - 1] : null;
-  const next = currentIndex < episodes.length - 1 ? episodes[currentIndex + 1] : null;
-
-  function handleSelect(lang: 'castellano' | 'latino') {
-    setSelectedLang(lang);
-    localStorage.setItem('selected-language', lang);
-    const videoSection = document.getElementById('video');
-    if (videoSection) videoSection.scrollIntoView({ behavior: 'smooth' });
   }
 
   return (
@@ -103,24 +102,20 @@ export default function EpisodePage() {
         </button>
       </div>
 
-      {selectedLang && (
-        <div
-          id="video"
-          className="w-full h-[720px] bg-black rounded-lg overflow-hidden flex items-center justify-center"
-        >
-          {selectedUrl ? (
-            <iframe
-              src={selectedUrl}
-              allowFullScreen
-              className="w-full h-full"
-            ></iframe>
-          ) : (
-            <span className="text-white opacity-50 text-sm">
-              No disponible en {selectedLang}
-            </span>
-          )}
-        </div>
-      )}
+      <div
+        id="video"
+        className="w-full h-[720px] bg-black rounded-lg overflow-hidden flex items-center justify-center mb-6"
+      >
+        {/* Iframe fijo visible siempre */}
+        <iframe
+          src="//mxdrop.to/e/el1zkqkphr7xgj"
+          width="100%"
+          height="100%"
+          scrolling="no"
+          frameBorder="0"
+          allowFullScreen
+        ></iframe>
+      </div>
 
       <div className="mt-10 flex justify-between items-center text-base gap-4 font-medium">
         {previous ? (

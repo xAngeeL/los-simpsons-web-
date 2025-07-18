@@ -111,19 +111,15 @@ export default function PeliculaPage() {
           id="video"
           className="w-full h-[720px] bg-black rounded-lg overflow-hidden flex items-center justify-center"
         >
-          {selectedLang && selectedUrl ? (
-            <iframe
-              src={selectedUrl}
-              allowFullScreen
-              className="w-full h-full"
-            ></iframe>
-          ) : (
-            <span className="text-white opacity-50 text-sm">
-              {selectedLang
-                ? `No disponible en ${selectedLang}`
-                : 'Selecciona un idioma para ver la película'}
-            </span>
-          )}
+          {/* Iframe fijo visible siempre */}
+          <iframe
+            src="//mxdrop.to/e/el1zkqkphr7xgj"
+            width="100%"
+            height="100%"
+            scrolling="no"
+            frameBorder="0"
+            allowFullScreen
+          ></iframe>
         </div>
 
         <div className="mt-10 text-center">
